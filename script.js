@@ -9,13 +9,17 @@ function roundCost(average){
 	return average;
 }
 
+function sellOff(){
+
+}
+
 function Fruit (name) {
 	this.name = name;
 	this.price = randomNumber(50, 999)/100;
 }
 
 Fruit.prototype.changePrice = function () {
-	this.price += randomNumber(-50, 50) / 100;
+	this.price += randomNumber(-25, 25) / 100;
 	this.price = Math.round(100*this.price)/100;
 	if (this.price > 9.99) {
 		this.price = 9.99;
@@ -34,6 +38,7 @@ var fruitArray = [apples, oranges, bananas, pears];
 
 console.log(fruitArray);
 
+//
 var userApple = [0, 0, 0];
 var userBanana = [0, 0, 0];
 var userOrange = [0, 0, 0];
@@ -44,7 +49,7 @@ var user = {
 	orange: userOrange,
 	//grape: userGrape,
 	pear: userPear,
-	cash: 100
+	cash: 50
 };
 
 $(document).ready(function(){
@@ -52,15 +57,27 @@ $(document).ready(function(){
 	$("#applesPrice").text(apples.price);
 	$("#pearsPrice").text(pears.price);
 	$("#orangesPrice").text(oranges.price);
-	setInterval(function (){
+
+	var j = 0;
+
+	var timer = setInterval(function (){
+		
 		for(var i = 0; i <fruitArray.length; i++){
 				fruitArray[i].changePrice();
 
+
 				$("#"+fruitArray[i].name+"Price").text(fruitArray[i].price);
 				//console.log("The price for " + fruitArray[i].name + " is " + fruitArray[i].price);
-			}
-		}, 5000);
+		} 
+		j++;
+		if(j == 21){
+			clearInterval(timer);
+			sellOff();
+		}
+	}, 5000);
 
+
+	
 
 
 	$("#bananaButton").on("click", function() {
@@ -81,7 +98,19 @@ $(document).ready(function(){
 		}		
 	});
 
+	$("#sellBanana").on("click", function(){
+		var cost = fruitArray[2].price;
+		cost = roundCost(cost);
+		if(user.banana[0] > 0){
+			user.banana[0]--;
+			user.cash += cost;
+			$("#numBananas").text("Bananas: " + user.banana[0]);
+			$("#userPurchases").text("Dollars Remaining: $" + user.cash);
+		} else {
+			alert("You are out of Bananas!");
+		}
 
+	});
 	/*$("#grapeButton").on("click", function() {
 		var cost = fruitArray[3].price;
 		user.grape[0]++;
@@ -112,6 +141,19 @@ $(document).ready(function(){
 
 	});
 
+	$("#sellApple").on("click", function(){
+		var cost = fruitArray[2].price;
+		cost = roundCost(cost);
+		if(user.apple[0] > 0){
+			user.apple[0]--;
+			user.cash += cost;
+			$("#numApples").text("Apples: " + user.apple[0]);
+			$("#userPurchases").text("Dollars Remaining: $" + user.cash);
+		} else {
+			alert("You are out of Apples!");
+		}
+	}); 
+
 
 	$("#orangeButton").on("click", function() {
 		var cost = fruitArray[1].price;
@@ -132,6 +174,19 @@ $(document).ready(function(){
 
 	});
 
+	$("#sellOrange").on("click", function(){
+		var cost = fruitArray[2].price;
+		cost = roundCost(cost);
+		if(user.orange[0] > 0){
+			user.orange[0]--;
+			user.cash += cost;
+			$("#numOranges").text("Oranges: " + user.orange[0]);
+			$("#userPurchases").text("Dollars Remaining: $" + user.cash);
+		} else {
+			alert("You are out of Oranges!");
+		}
+	}); 
+
 
 	$("#pearButton").on("click", function() {
 		var cost = fruitArray[3].price;
@@ -150,6 +205,19 @@ $(document).ready(function(){
 			alert("Please look for something cheaper!");
 		}	
 
-	  });
-	
+	 });
+
+	$("#sellPear").on("click", function(){
+		var cost = fruitArray[2].price;
+		cost = roundCost(cost);
+		if(user.pear[0] > 0){
+			user.pear[0]--;
+			user.cash += cost;
+			$("#numPears").text("Pears: " + user.pear[0]);
+			$("#userPurchases").text("Dollars Remaining: $" + user.cash);
+		} else {
+			alert("You are out of Pears!");
+		}
 	});
+	
+});
